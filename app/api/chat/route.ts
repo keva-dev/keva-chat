@@ -18,8 +18,6 @@ export async function POST(req: Request) {
     }
   }
 
-  console.log('User: ', session)
-
   const configuration = new Configuration({
     apiKey: previewToken || process.env.OPENAI_API_KEY
   })
@@ -27,7 +25,7 @@ export async function POST(req: Request) {
   const openai = new OpenAIApi(configuration)
 
   const res = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
+    model: session.user?.email === 'tu@keva.dev' ? 'gpt-3.5-turbo-16k' : 'gpt-3.5-turbo',
     messages,
     temperature: 0.8,
     stream: true

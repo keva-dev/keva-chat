@@ -7,6 +7,9 @@ import { nanoid } from '@/lib/utils'
 
 export const runtime = 'nodejs'
 
+const REQUEST_LIMIT = 2 // Maximum number of requests allowed per day per user
+const REQUEST_LIMIT_EXPIRY = 24 * 60 * 60 // Expiry time for the request limit (in seconds)
+
 export async function POST(req: Request) {
   const json = await req.json()
   const { messages, previewToken } = json
@@ -16,6 +19,15 @@ export async function POST(req: Request) {
     if (session == null) {
       return new Response('Unauthorized', { status: 401 })
     }
+  }
+
+  // Get the user ID from the session
+  const userId = session?.user.id
+
+  // Check if the user has reached the request limit
+  const requestCount = await kv.get(`user:request:${userId}`)
+  if (requestCount && parseInt(<string>requestCount) >= REQUEST_LIMIT) {
+    return new Response(`Each user only have ${REQUEST_LIMIT} requests per day!`, { status: 429 })
   }
 
   const configuration = new Configuration({
@@ -34,7 +46,13 @@ export async function POST(req: Request) {
   const stream = OpenAIStream(res, {
     async onCompletion(completion) {
       const title = json.messages[0].content.substring(0, 100)
-      const userId = session?.user.id
+
+      // Update the request count for the user
+      const requestCount = (await kv.get(`user:request:${userId}`)) || '0'
+      await kv.set(`user:request:${userId}`, parseInt(<string>requestCount) + 1, {
+        ex: REQUEST_LIMIT_EXPIRY
+      })
+
       if (userId) {
         const id = json.id ?? nanoid()
         const createdAt = Date.now()

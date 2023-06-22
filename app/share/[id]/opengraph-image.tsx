@@ -81,12 +81,12 @@ export default async function Image({ params }: ImageProps) {
             </svg>
             <div tw="flex text-[1.8rem] ml-4 text-[#9b9ba4]">
               Built with{' '}
-              <div tw="flex text-[#eaeaf0] ml-2 mr-2">Vercel AI SDK</div> &
-              <div tw="flex text-[#eaeaf0] ml-2">KV</div>
+              <div tw="flex text-[#eaeaf0] ml-2 mr-2">Keva Cloud</div> &
+              <div tw="flex text-[#eaeaf0] ml-2">OpenAI</div>
             </div>
           </div>
           <div tw="text-[1.8rem] ml-auto text-[#9b9ba4]">
-            demo.chat.vercel.ai
+            chat.keva.dev
           </div>
         </div>
       </div>

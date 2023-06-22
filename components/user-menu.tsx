@@ -14,6 +14,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { IconExternalLink } from '@/components/ui/icons'
 
+import { useRouter } from 'next/navigation'
+
 export interface UserMenuProps {
   user: Session['user']
 }
@@ -24,6 +26,7 @@ function getUserInitials(name: string) {
 }
 
 export function UserMenu({ user }: UserMenuProps) {
+  const router = useRouter()
   return (
     <div className="flex items-center justify-between">
       <DropdownMenu>
@@ -34,6 +37,7 @@ export function UserMenu({ user }: UserMenuProps) {
                 className="h-6 w-6 select-none rounded-full ring-1 ring-zinc-100/10 transition-opacity duration-300 hover:opacity-80"
                 src={user?.picture ? `${user.picture}&s=60` : ''}
                 alt={user.name ?? 'Avatar'}
+                height="60" width="60"
               />
             ) : (
               <div className="flex h-7 w-7 shrink-0 select-none items-center justify-center rounded-full bg-muted/50 text-xs font-medium uppercase text-muted-foreground">
@@ -49,6 +53,22 @@ export function UserMenu({ user }: UserMenuProps) {
             <div className="text-xs text-zinc-500">{user?.email}</div>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() =>
+              router.push('/')
+            }
+            className="text-xs"
+          >
+            Homepage
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() =>
+              router.push('/profile')
+            }
+            className="text-xs"
+          >
+            Profile
+          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <a
               href="https://keva.dev"
@@ -56,7 +76,7 @@ export function UserMenu({ user }: UserMenuProps) {
               rel="noopener noreferrer"
               className="inline-flex w-full items-center justify-between text-xs"
             >
-              Keva Homepage
+              Keva OSS
               <IconExternalLink className="ml-auto h-3 w-3" />
             </a>
           </DropdownMenuItem>

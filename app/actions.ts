@@ -51,6 +51,7 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
 
   const uid = await kv.hget<string>(`chat:${id}`, 'userId')
 
+  // @ts-ignore
   if (uid !== session?.user?.id) {
     return {
       error: 'Unauthorized'
@@ -101,6 +102,7 @@ export async function getSharedChat(id: string) {
 export async function shareChat(chat: Chat) {
   const session = await auth()
 
+  // @ts-ignore
   if (!session?.user?.id || session.user.id !== chat.userId) {
     return {
       error: 'Unauthorized'
@@ -115,4 +117,8 @@ export async function shareChat(chat: Chat) {
   await kv.hmset(`chat:${chat.id}`, payload)
 
   return payload
+}
+
+export async function getUserRequestCount(userId: number) {
+  return parseInt(<string>await kv.get(`user:request:${userId}`))
 }

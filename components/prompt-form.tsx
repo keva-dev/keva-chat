@@ -72,6 +72,7 @@ export function PromptForm({
           placeholder="Send a message."
           spellCheck={false}
           className="min-h-[60px] w-full resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
+          id="kevachat-input"
         />
         <div className="absolute right-0 top-4 sm:right-4">
           <Tooltip>
@@ -80,6 +81,7 @@ export function PromptForm({
                 type="submit"
                 size="icon"
                 disabled={isLoading || input === ''}
+                id="kevachat-submit"
               >
                 <IconArrowElbow />
                 <span className="sr-only">Send message</span>

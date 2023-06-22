@@ -7,7 +7,7 @@ import { nanoid } from '@/lib/utils'
 
 export const runtime = 'nodejs'
 
-const REQUEST_LIMIT = 2 // Maximum number of requests allowed per day per user
+const REQUEST_LIMIT = 100 // Maximum number of requests allowed per day per user
 const REQUEST_LIMIT_EXPIRY = 24 * 60 * 60 // Expiry time for the request limit (in seconds)
 
 export async function POST(req: Request) {
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   // Check if the user has reached the request limit
   const requestCount = parseInt(<string>await kv.get(`user:request:${userId}`))
   if (requestCount && requestCount >= REQUEST_LIMIT) {
-    return new Response(`Each user only have ${REQUEST_LIMIT} requests per day!`, { status: 429 })
+    return new Response(`You have reached free-tier limit!`, { status: 429 })
   }
 
   const configuration = new Configuration({

@@ -21,13 +21,19 @@ export async function POST(req: Request) {
     }
   }
 
-  // Get the user ID from the session
-  const userId = session?.user.id
+  if (session?.user?.id) {
+    // Get the user ID from the session
+    const userId = session?.user.id
+    // Check if the user has reached the request limit
+    const requestCount = parseInt(<string>await kv.get(`user:request:${userId}`))
+    if (requestCount && requestCount >= REQUEST_LIMIT) {
+      return new Response(`You have reached free-tier limit!`, { status: 429 })
+    }
 
-  // Check if the user has reached the request limit
-  const requestCount = parseInt(<string>await kv.get(`user:request:${userId}`))
-  if (requestCount && requestCount >= REQUEST_LIMIT) {
-    return new Response(`You have reached free-tier limit!`, { status: 429 })
+    // Update the request count for the user
+    await kv.set(`user:request:${userId}`, requestCount + 1, {
+      ex: REQUEST_LIMIT_EXPIRY
+    })
   }
 
   const configuration = new Configuration({
@@ -43,14 +49,10 @@ export async function POST(req: Request) {
     stream: true
   })
 
-  // Update the request count for the user
-  await kv.set(`user:request:${userId}`, requestCount + 1, {
-    ex: REQUEST_LIMIT_EXPIRY
-  })
-
   const stream = OpenAIStream(res, {
     async onCompletion(completion) {
       const title = json.messages[0].content.substring(0, 100)
+      const userId = session?.user.id
       if (userId) {
         const id = json.id ?? nanoid()
         const createdAt = Date.now()

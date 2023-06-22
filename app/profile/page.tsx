@@ -28,15 +28,15 @@ export default async function SignInPage() {
 
   return (
     <div className={'m-10 max-w-md'}>
-      <Card>
-        <CardHeader>
+      <Card className="relative">
+        <CardHeader className="absolute right-0 top-0">
           <CardTitle>{session.user.name}</CardTitle>
           <CardDescription>{session.user.email}</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-6">
+        <CardContent className="grid gap-6 pt-6">
           <div className="flex items-center space-x-4 rounded-md p-2 hover:bg-accent hover:text-accent-foreground">
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">Account Type</p>
+              <p className="text-sm font-medium leading-none">Account</p>
               <p className="text-sm text-muted-foreground">
                 Free Tier
               </p>

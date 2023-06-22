@@ -61,15 +61,24 @@ export function ChatPanel({
         <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
           <PromptForm
             onSubmit={async value => {
+              // @ts-ignore
               try {
                 await append({
                   id,
                   content: value,
                   role: 'user'
                 })
-              } catch(err) {
-                console.error(err)
-                toast.error('Please login first')
+                // @ts-ignore
+              } catch(err: Error) {
+                if (err.message) {
+                  if (err.message.toLowerCase() === 'Unauthorized'.toLowerCase()) {
+                    toast.error('Please login to chat')
+                  } else {
+                    toast.error(err.message)
+                  }
+                } else {
+                  toast.error('Unknown error, please try again')
+                }
                 setInput(value)
               }
             }}

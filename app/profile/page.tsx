@@ -27,14 +27,14 @@ export default async function SignInPage() {
   const totalUsage = session?.user?.email === 'tu@keva.dev' ? await getTotalUsage() : 0
 
   return (
-    <div className={'m-10 max-w-md'}>
+    <div className={'sm:m-10 m-5 max-w-md'}>
       <Card className="relative">
         <CardHeader className="absolute right-0 top-0">
           <CardTitle>{session.user.name}</CardTitle>
           <CardDescription>{session.user.email}</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-6 pt-6">
-          <div className="flex items-center space-x-4 rounded-md p-2 hover:bg-accent hover:text-accent-foreground">
+          <div className="flex items-center space-x-4 rounded-md p-2">
             <div className="space-y-1">
               <p className="text-sm font-medium leading-none">Account</p>
               <p className="text-sm text-muted-foreground">
@@ -42,7 +42,7 @@ export default async function SignInPage() {
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-4 rounded-md p-2 hover:bg-accent hover:text-accent-foreground">
+          <div className="flex items-center space-x-4 rounded-md p-2">
             <div className="space-y-1">
               <p className="text-sm font-medium leading-none">Daily Requests</p>
               <p className="text-sm text-muted-foreground">
@@ -50,7 +50,7 @@ export default async function SignInPage() {
               </p>
             </div>
           </div>
-          {session?.user?.email === 'tu@keva.dev' && <div className="flex items-center space-x-4 rounded-md p-2 hover:bg-accent hover:text-accent-foreground">
+          {session?.user?.email === 'tu@keva.dev' && <div className="flex items-center space-x-4 rounded-md p-2">
             <div className="space-y-1">
               <p className="text-sm font-medium leading-none">Total Usage</p>
               <p className="text-sm text-muted-foreground">

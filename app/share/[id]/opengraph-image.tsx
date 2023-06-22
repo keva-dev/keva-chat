@@ -81,7 +81,7 @@ export default async function Image({ params }: ImageProps) {
             </svg>
             <div tw="flex text-[1.8rem] ml-4 text-[#9b9ba4]">
               Built with{' '}
-              <div tw="flex text-[#eaeaf0] ml-2 mr-2">Keva Cloud</div> &
+              <div tw="flex text-[#eaeaf0] ml-2 mr-2">KevaCloud</div> &
               <div tw="flex text-[#eaeaf0] ml-2">OpenAI</div>
             </div>
           </div>

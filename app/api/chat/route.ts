@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   const openai = new OpenAIApi(configuration)
 
   const res = await openai.createChatCompletion({
-    model: session.user?.email === 'tu@keva.dev' ? 'gpt-3.5-turbo-16k' : 'gpt-3.5-turbo',
+    model: 'gpt-3.5-turbo',
     messages,
     temperature: 0.8,
     stream: true

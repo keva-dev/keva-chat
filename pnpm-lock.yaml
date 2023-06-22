@@ -8,6 +8,9 @@ overrides:
   '@auth/nextjs': 0.0.0-manual.223c6467
 
 dependencies:
+  '@auth/nextjs':
+    specifier: 0.0.0-manual.223c6467
+    version: 0.0.0-manual.223c6467(next@13.4.7-canary.1)(react@18.2.0)
   '@radix-ui/react-alert-dialog':
     specifier: ^1.0.4
     version: 1.0.4(@types/react-dom@18.2.4)(@types/react@18.2.6)(react-dom@18.2.0)(react@18.2.0)

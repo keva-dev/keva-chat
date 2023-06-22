@@ -70,6 +70,7 @@ export function ChatPanel({
               } catch(err) {
                 console.error(err)
                 toast.error('Please login first')
+                setInput(value)
               }
             }}
             input={input}

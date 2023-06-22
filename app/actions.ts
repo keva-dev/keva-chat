@@ -1,11 +1,11 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
-import { kv } from '@vercel/kv'
+import {revalidatePath} from 'next/cache'
+import {redirect} from 'next/navigation'
+import {kv} from '@vercel/kv'
 
-import { auth } from '@/auth'
-import { type Chat } from '@/lib/types'
+import {auth} from '@/auth'
+import {type Chat} from '@/lib/types'
 
 export async function getChats(userId?: string | null) {
   if (!userId) {
@@ -121,4 +121,14 @@ export async function shareChat(chat: Chat) {
 
 export async function getUserRequestCount(userId: number) {
   return parseInt(<string>await kv.get(`user:request:${userId}`))
+}
+
+export async function getTotalUsage() {
+  const resp = await fetch('https://api.openai.com/dashboard/billing/usage?start_date=2023-06-01&end_date=2023-09-01', {
+    headers: {
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+    }
+  })
+  const json = await resp.json()
+  return (json.total_usage / 100).toFixed(2)
 }

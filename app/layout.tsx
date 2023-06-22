@@ -10,6 +10,8 @@ import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://chat.keva.dev'),
+  openGraph: { images: 'https://keva.dev/img/preview.png', },
   title: {
     default: 'Keva Chat',
     template: `%s - Keva Chat`

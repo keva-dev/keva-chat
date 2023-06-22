@@ -14,12 +14,12 @@ type ExampleMessages = ChatMessage[];
 const exampleMessages: ExampleMessages = [
   {
     heading: 'Data Analyst mock interview',
-    message: `Act as a Interviewer for a data analyst role, ask me question one by one.`,
+    message: `Act as an Interviewer for a data analyst role, ask me a question everytime.`,
     submit: true
   },
   {
     heading: 'Software Engineer mock interview',
-    message: `Act as a Interviewer for a software engineer role, ask me question one by one.`,
+    message: `Act as an Interviewer for a software engineer role, ask me a question everytime.`,
     submit: true
   },
   {

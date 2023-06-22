@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   const session = await auth()
 
   if (process.env.VERCEL_ENV !== 'preview' && !previewToken) {
-    if (session == null) {
+    if (session == null || !session?.user || !session?.user.id) {
       return new Response('Unauthorized', { status: 401 })
     }
   }
@@ -25,8 +25,8 @@ export async function POST(req: Request) {
   const userId = session?.user.id
 
   // Check if the user has reached the request limit
-  const requestCount = await kv.get(`user:request:${userId}`)
-  if (requestCount && parseInt(<string>requestCount) >= REQUEST_LIMIT) {
+  const requestCount = parseInt(<string>await kv.get(`user:request:${userId}`))
+  if (requestCount && requestCount >= REQUEST_LIMIT) {
     return new Response(`Each user only have ${REQUEST_LIMIT} requests per day!`, { status: 429 })
   }
 
@@ -43,16 +43,14 @@ export async function POST(req: Request) {
     stream: true
   })
 
+  // Update the request count for the user
+  await kv.set(`user:request:${userId}`, requestCount + 1, {
+    ex: REQUEST_LIMIT_EXPIRY
+  })
+
   const stream = OpenAIStream(res, {
     async onCompletion(completion) {
       const title = json.messages[0].content.substring(0, 100)
-
-      // Update the request count for the user
-      const requestCount = (await kv.get(`user:request:${userId}`)) || '0'
-      await kv.set(`user:request:${userId}`, parseInt(<string>requestCount) + 1, {
-        ex: REQUEST_LIMIT_EXPIRY
-      })
-
       if (userId) {
         const id = json.id ?? nanoid()
         const createdAt = Date.now()

@@ -6,6 +6,7 @@ import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
 import { IconRefresh, IconStop } from '@/components/ui/icons'
 import { FooterText } from '@/components/footer'
 import { toast } from 'react-hot-toast'
+import { Dispatch } from 'react'
 
 export interface ChatPanelProps
   extends Pick<
@@ -18,7 +19,9 @@ export interface ChatPanelProps
     | 'input'
     | 'setInput'
   > {
-  id?: string
+  id?: string,
+  // @ts-ignore
+  setPreviewTokenDialog: Dispatch<SetStateAction<boolean>>,
 }
 
 export function ChatPanel({
@@ -26,6 +29,7 @@ export function ChatPanel({
   isLoading,
   stop,
   append,
+  setPreviewTokenDialog,
   reload,
   input,
   setInput,
@@ -73,6 +77,7 @@ export function ChatPanel({
                 if (err.message) {
                   if (err.message.toLowerCase() === 'Unauthorized'.toLowerCase()) {
                     toast.error('Please login to chat')
+                    setPreviewTokenDialog(true)
                   } else {
                     toast.error(err.message)
                   }

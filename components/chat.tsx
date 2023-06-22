@@ -20,7 +20,6 @@ import { useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 
-const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
   id?: string
@@ -31,7 +30,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     'ai-token',
     null
   )
-  const [previewTokenDialog, setPreviewTokenDialog] = useState(IS_PREVIEW)
+  const [previewTokenDialog, setPreviewTokenDialog] = useState(false)
   const [previewTokenInput, setPreviewTokenInput] = useState(previewToken ?? '')
   const { messages, append, reload, stop, isLoading, input, setInput } =
     useChat({
@@ -59,6 +58,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         isLoading={isLoading}
         stop={stop}
         append={append}
+        setPreviewTokenDialog={setPreviewTokenDialog}
         reload={reload}
         messages={messages}
         input={input}
@@ -68,7 +68,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       <Dialog open={previewTokenDialog} onOpenChange={setPreviewTokenDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Enter your OpenAI Key</DialogTitle>
+            <DialogTitle>Please login or enter your OpenAI Key</DialogTitle>
             <DialogDescription>
               If you have not obtained your OpenAI API key, you can do so by{' '}
               <a
@@ -77,9 +77,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
               >
                 signing up
               </a>{' '}
-              on the OpenAI website. This is only necessary for preview
-              environments so that the open source community can test the app.
-              The token will be saved to your browser&apos;s local storage under
+              on the OpenAI website. The token will be saved to your browser&apos;s local storage under
               the name <code className="font-mono">ai-token</code>.
             </DialogDescription>
           </DialogHeader>

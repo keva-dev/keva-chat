@@ -29,10 +29,10 @@ export function UserMenu({ user }: UserMenuProps) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="pl-0">
-            {user?.image ? (
+            {user?.picture ? (
               <Image
                 className="h-6 w-6 select-none rounded-full ring-1 ring-zinc-100/10 transition-opacity duration-300 hover:opacity-80"
-                src={user?.image ? `${user.image}&s=60` : ''}
+                src={user?.picture ? `${user.picture}&s=60` : ''}
                 alt={user.name ?? 'Avatar'}
               />
             ) : (

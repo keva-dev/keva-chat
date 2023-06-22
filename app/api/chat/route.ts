@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   const res = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages,
-    temperature: 0.7,
+    temperature: 1.8,
     stream: true
   })
 
